@@ -5,6 +5,10 @@ resource "aws_autoscaling_group" "ghost_ec2_pool" {
   max_size            = 3
   min_size            = 3
 
+  instance_refresh {
+    strategy = "Rolling"
+  }
+  
   launch_template {
     id      = aws_launch_template.ghost.id
     version = "$Latest"
