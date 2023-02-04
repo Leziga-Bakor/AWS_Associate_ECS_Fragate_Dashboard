@@ -107,7 +107,7 @@ resource "aws_security_group" "bastion" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["89.134.2.36/32"]
+    cidr_blocks = ["195.56.119.209/32"]
   }
 
   egress {
@@ -165,7 +165,7 @@ resource "aws_security_group" "alb" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["89.134.2.36/32"]
+    cidr_blocks = ["195.56.119.209/32"]
   }
 
   egress {

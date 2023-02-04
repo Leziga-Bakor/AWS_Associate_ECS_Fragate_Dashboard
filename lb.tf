@@ -5,7 +5,7 @@ resource "aws_lb" "ghost-alb" {
   #security_groups    = [aws_security_group.lb_sg.id]
   subnets = [aws_subnet.public_a.id, aws_subnet.public_b.id, aws_subnet.public_c.id]
 
-  enable_deletion_protection = true
+  enable_deletion_protection = false
 
   tags = {
     Environment = "production"

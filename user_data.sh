@@ -6,7 +6,7 @@ exec > >(tee /var/log/cloud-init-output.log|logger -t user-data -s 2>/dev/consol
 
 ### Update this to match your ALB DNS name
 
-LB_DNS_NAME=ghost-alb-1486263927.us-east-1.elb.amazonaws.com
+LB_DNS_NAME=ghost-alb-1471030353.us-east-1.elb.amazonaws.com
 
 ###
 
