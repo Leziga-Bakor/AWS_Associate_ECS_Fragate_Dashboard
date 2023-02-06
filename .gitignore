@@ -9,6 +9,7 @@
 # # .tfstate files
 *.tfstate
 *.tfstate.*
+first_infrastructure
 
 # Crash log files
 crash.log

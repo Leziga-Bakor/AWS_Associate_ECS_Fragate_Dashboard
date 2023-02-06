@@ -4,18 +4,18 @@
 
 exec > >(tee /var/log/cloud-init-output.log|logger -t user-data -s 2>/dev/console) 2>&1
 
-### Update this to match your ALB DNS name
-
-LB_DNS_NAME=ghost-alb-1471030353.us-east-1.elb.amazonaws.com
-
-###
-
-
+yum install jq -y
 
 REGION=$(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone | sed 's/[a-z]$//')
 
 EFS_ID=$(aws efs describe-file-systems --query 'FileSystems[?Name==`ghost_content`].FileSystemId' --region $REGION --output text)
 
+
+### Update this to match your ALB DNS name
+LB=ghost-alb
+# LB_DNS_NAME=ghost-alb-392455338.us-east-1.elb.amazonaws.com
+LB_DNS_NAME=$(aws elbv2 describe-load-balancers --region $REGION --names $LB | jq -r '.LoadBalancers[].DNSName')
+###
 
 
 ### Install pre-reqs
@@ -48,21 +48,29 @@ mount -t efs -o tls $EFS_ID:/ /home/ghost_user/ghost/content
 
 
 
-FILE=/home/ghost_user/ghost/content/data/ghost-local.db
+if [ -z "$(ls -A /home/ghost_user/ghost/content)" ]; then
 
-if [ -f "$FILE" ]; then
-
-  echo "$FILE exists."
-
-else
-
-  echo "$FILE not exist. Copying"
-
-  mkdir -p /home/ghost_user/ghost/content/data
-
-  mv "/home/ghost_user/content/data/ghost-local.db" "/home/ghost_user/ghost/content/data"
+  chown -R ghost_user:ghost_user ghost/
+  sudo -u ghost_user cp -R ./content/* /home/ghost_user/ghost/content
 
 fi
+
+##################################################################################
+# FILE=/home/ghost_user/ghost/content/data/ghost-local.db
+
+# if [ -f "$FILE" ]; then
+
+#   echo "$FILE exists."
+
+# else
+
+#   echo "$FILE not exist. Copying"
+
+#   mkdir -p /home/ghost_user/ghost/content/data
+
+#   mv "/home/ghost_user/content/data/ghost-local.db" "/home/ghost_user/ghost/content/data"
+
+# fi
 
 
 

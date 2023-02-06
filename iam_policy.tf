@@ -17,7 +17,8 @@ resource "aws_iam_policy" "ghost_app_policy" {
           "elasticfilesystem:DescribeFileSystems",
           "ssm:GetParameter*",
           "secretsmanager:GetSecretValue",
-          "kms:Decrypt"
+          "kms:Decrypt",
+          "elasticloadbalancing:DescribeLoadBalancers"
 
         ]
         Effect   = "Allow"

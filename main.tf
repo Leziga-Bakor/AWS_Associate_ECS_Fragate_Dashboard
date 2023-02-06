@@ -107,7 +107,7 @@ resource "aws_security_group" "bastion" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["195.56.119.209/32"]
+    cidr_blocks = ["89.134.2.12/32"]
   }
 
   egress {
@@ -134,6 +134,14 @@ resource "aws_security_group" "ec2_pool" {
     security_groups = [aws_security_group.bastion.id]
 
   }
+
+  # ingress {
+  #   from_port       = 2368
+  #   to_port         = 2368
+  #   protocol        = "tcp"
+  #   security_groups = [aws_security_group.alb.id]
+
+  # }
 
   ingress {
     from_port   = 2049
@@ -165,7 +173,7 @@ resource "aws_security_group" "alb" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = ["195.56.119.209/32"]
+    cidr_blocks = ["89.134.2.12/32"]
   }
 
   egress {
