@@ -22,5 +22,5 @@ resource "aws_launch_template" "ghost" {
     }
   }
 
-  user_data = filebase64("${path.module}/user_data.sh")
+  user_data = filebase64("${path.module}/user_data -RDS.sh")
 }
