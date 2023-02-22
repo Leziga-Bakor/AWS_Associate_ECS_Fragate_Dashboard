@@ -29,46 +29,45 @@ LB_DNS_NAME=$(aws elbv2 describe-load-balancers --region $REGION --names $LB | j
 
 curl -sL https://rpm.nodesource.com/setup_14.x | sudo bash -
 
-yum install -y nodejs amazon-efs-utils
+yum install -y nodejs amazon-efs-utils jq
 
 npm install ghost-cli@latest -g
 
 
 
-adduser ghost_user
+adduser node
 
-usermod -aG wheel ghost_user
+usermod -aG wheel node
 
-cd /home/ghost_user/
+cd /home/node/
 
 
 
-sudo -u ghost_user ghost install local
+sudo -u node ghost install local
 
 
 
 ### EFS mount
 
-mkdir -p /home/ghost_user/ghost/content
+mkdir -p /home/node/ghost/content
 
-mount -t efs -o tls $EFS_ID:/ /home/ghost_user/ghost/content
+mount -t efs -o tls $EFS_ID:/ /home/node/ghost/content
 
 
-IS_CONTENT_EMPTY=$(ls -A /home/ghost_user/ghost/content)
+chown -R node:node ghost/
+IS_CONTENT_EMPTY=$(ls -A /home/node/ghost/content)
 if [[ -z $IS_CONTENT_EMPTY ]]; then 
 
   echo 'Empty EFS. Copying content...'
-  sudo -u ghost_user cp -R ./content/* /home/ghost_user/ghost/content
+  sudo -u node cp -R ./content/* /home/node/ghost/content
   
 else 
   echo 'EFS OK. Skipping'
 fi
 
-chmod -R ag+w ghost
+sudo -u ghost_user cp -R ./content/* /home/ghost_user/ghost/content
 
-# chmod -R 777 /home/ghost_user/ghost
-
-
+chmod -R ga+w ghost/
 
 cat << EOF > config.development.json
 
@@ -99,19 +98,16 @@ cat << EOF > config.development.json
   },
   "process": "local",
   "paths": {
-    "contentPath": "/home/ghost_user/ghost/content"
+    "contentPath": "/home/node/ghost/content"
   }
 }
 
 
 EOF
 
-mkdir -p /var/lib/ghost/current/content/themes
-cd /var/lib/ghost/current/content/themes
-ln -s /home/ghost_user/current/content/themes/casper casper
-cd /home/ghost_user
 
-sudo -u ghost_user ghost stop
 
-sudo -u ghost_user ghost start
+sudo -u node ghost stop
+
+sudo -u node ghost start
 

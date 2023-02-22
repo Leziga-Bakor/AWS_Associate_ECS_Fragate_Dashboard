@@ -10,6 +10,8 @@
 *.tfstate
 *.tfstate.*
 first_infrastructure
+first
+f
 
 # Crash log files
 crash.log

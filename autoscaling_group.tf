@@ -13,4 +13,7 @@ resource "aws_autoscaling_group" "ghost_ec2_pool" {
     id      = aws_launch_template.ghost.id
     version = "$Latest"
   }
+
+  depends_on = [aws_db_instance.ghost,aws_ecs_service.ghost_service]
+  
 }

@@ -18,8 +18,9 @@ resource "aws_iam_policy" "ghost_app_policy" {
           "ssm:GetParameter*",
           "secretsmanager:GetSecretValue",
           "kms:Decrypt",
-          "elasticloadbalancing:DescribeLoadBalancers",
-          "rds:DescribeDBInstances",
+          "elasticloadbalancing:*",
+          "rds:DescribeDBInstances"
+          
 
         ]
         Effect   = "Allow"

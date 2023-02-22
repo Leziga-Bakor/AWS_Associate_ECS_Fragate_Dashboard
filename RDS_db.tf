@@ -10,7 +10,7 @@ resource "aws_db_instance" "ghost" {
   vpc_security_group_ids = [aws_security_group.mysql.id]
   db_subnet_group_name   = aws_db_subnet_group.ghost.name
   username               = "foo"
-  password               = "${aws_ssm_parameter.foo.value}"#"foobarbaz"
-  #   parameter_group_name = "default.mysql5.7"
-  #   skip_final_snapshot  = true
+  password               = "${aws_ssm_parameter.foo.value}"
+  skip_final_snapshot  = true
+ 
 }

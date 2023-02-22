@@ -183,6 +183,13 @@ resource "aws_security_group" "alb" {
     security_groups = [aws_security_group.ec2_pool.id]
   }
 
+  # egress {
+  #   from_port       = 0
+  #   to_port         = 0
+  #   protocol        = "-1"
+  #   security_groups = [aws_security_group.fragate_pool.id]
+  # }
+
   tags = {
     Name = "alb"
   }
@@ -201,6 +208,13 @@ resource "aws_security_group" "efs" {
     protocol        = "tcp"
     security_groups = [aws_security_group.ec2_pool.id]
   }
+  
+  # ingress {
+  #   from_port       = 2049
+  #   to_port         = 2049
+  #   protocol        = "tcp"
+  #   security_groups = [aws_security_group.fragate_pool.id]
+  # }
 
   egress {
     from_port   = 0
